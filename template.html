@@ -14,8 +14,17 @@
         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
           <input type="text" class="form-control" id="urlInputForm" placeholder="Enter URL">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" id="addFeedBtn" disabled="true">Add</button>
       </form>
+      <div class="form-control-feedback">
+        <p id="statusMessage"></p>
+      </div>
+    </div>
+    <div class ="container-fluid">
+      <div class="row">
+        <ul class="list-group col-lg-4" id="channelList"></ul>
+        <ul class="list-group col-lg-8" id="articleList"></ul>
+      </div>
     </div>
   </body>
 </html>
