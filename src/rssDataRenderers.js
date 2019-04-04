@@ -17,6 +17,9 @@ export const renderArticles = (articles) => {
   const innerHTML = articles.map(({ title, link }) => (
     `<div class="list-group-item">
       <a href="${link}">${title}</a>
+      <button type="button" class="btn btn-sm btn-outline-info ml-sm-2" data-toggle="modal" data-target="#modalWindow">
+        Viev info
+      </button>
     </div>`)).join('');
   articleList.innerHTML = innerHTML;
   const header = document.createElement('h4');

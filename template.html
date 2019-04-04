@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>RSS Reader</title>
   </head>
+  <div class="modal fade" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="modalLabel"></h4>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <body>
     <div class="jumbotron">
       <h1 class="display-4">RSS Reader</h1>
@@ -12,7 +28,7 @@
       <hr class="my-4">
       <form class="form-inline">
         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-          <input type="text" class="form-control" id="urlInputForm" placeholder="Enter URL">
+          <input type="text" class="form-control" id="urlInputForm" placeholder="Enter URL" value="">
         </div>
         <button type="submit" class="btn btn-primary" id="addFeedBtn" disabled="true">Add</button>
       </form>
