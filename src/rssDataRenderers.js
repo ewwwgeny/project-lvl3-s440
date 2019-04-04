@@ -14,11 +14,12 @@ export const renderChannels = (channels) => {
 
 export const renderArticles = (articles) => {
   const articleList = document.getElementById('articleList');
-  const innerHTML = articles.map(({ title, link }) => (
+  const sortedArticles = articles.slice().sort((a, b) => b.pubDate - a.pubDate);
+  const innerHTML = sortedArticles.map(({ title, link }) => (
     `<div class="list-group-item">
       <a href="${link}">${title}</a>
       <button type="button" class="btn btn-sm btn-outline-info ml-sm-2" data-toggle="modal" data-target="#modalWindow">
-        Viev info
+        View info
       </button>
     </div>`)).join('');
   articleList.innerHTML = innerHTML;

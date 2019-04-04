@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import isURL from 'validator/lib/isURL';
-// import _ from 'lodash';
 import axios from 'axios';
 import { watch } from 'melanke-watchjs';
 import $ from 'jquery';
@@ -10,7 +9,7 @@ import { renderChannels, renderArticles } from './rssDataRenderers';
 
 export default () => {
   const state = {
-    addedUrls: ['http://ya.ru'],
+    addedUrls: [],
     inputStatus: 'init', // invalid, duplicate, valid, loading, error
     loadingError: null,
     feeds: {
@@ -25,13 +24,13 @@ export default () => {
 
   const corsProxy = 'https://cors-anywhere.herokuapp.com/';
 
-  const findArticle = articleTitle => state.feeds.articles
-    .find(({ title }) => title === articleTitle);
-
   const urlInput = document.getElementById('urlInputForm');
   const addFeedBtn = document.getElementById('addFeedBtn');
   const form = document.querySelector('form');
   const statusMessageElem = document.getElementById('statusMessage');
+
+  const findArticle = articleTitle => state.feeds.articles
+    .find(({ title }) => title === articleTitle);
 
   // urlInput.value = '';
   urlInput.addEventListener('input', ({ target: { value } }) => {
@@ -41,6 +40,7 @@ export default () => {
     }
     const isValidInput = isURL(value);
     const urlInFeeds = isValidInput && state.addedUrls.includes(value);
+
     if (!isValidInput) {
       state.inputStatus = 'invalid';
       return;
@@ -75,6 +75,23 @@ export default () => {
       state.loadingError = error.message;
     });
   });
+
+  $('#modalWindow').on('hide.bs.modal', () => {
+    state.modalContent = { title: '', content: '' };
+  });
+
+  const updateArticles = () => {
+    const promises = state.addedUrls.map(url => axios.get(`${corsProxy}${url}`));
+    setTimeout(() => Promise.all(promises).then((responses) => {
+      const newArticles = responses
+        .map(response => parse(response.data).items
+          .filter(({ title }) => !findArticle(title)))
+        .flat();
+      state.feeds.articles.push(...newArticles);
+    }).finally(updateArticles), 5000);
+  };
+
+  updateArticles();
 
   const renderInputMethods = {
     init: () => {
@@ -115,10 +132,6 @@ export default () => {
       statusMessageElem.textContent = state.loadingError;
     },
   };
-
-  $('#modalWindow').on('hide.bs.modal', () => {
-    state.modalContent = { title: '', content: '' };
-  });
 
   watch(state, 'inputStatus', () => {
     renderInputMethods[state.inputStatus]();
